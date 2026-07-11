@@ -23,7 +23,7 @@ def install_packages(libraries):
     subprocess.run(["python", "-m", "venv", "env"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     for lib in libraries:
         subprocess.run(
-            ["./env/bin/python", "-m", "pip", "install", "--target=temp", lib],
+            ["./env/bin/python", "-m", "pip", "install", lib],
             check=True,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
