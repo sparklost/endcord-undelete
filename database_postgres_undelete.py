@@ -37,7 +37,7 @@ class ChannelStore:
                 CREATE INDEX IF NOT EXISTS idx_deleted_messages_id
                 ON messages (message_id)
             """)
-        logger.info("Postgresql database initialized successfully")
+        logger.info("Connected to PostgreSQL database successfully")
 
 
     def add_message(self, channel_id, message):

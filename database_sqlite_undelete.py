@@ -34,7 +34,7 @@ class ChannelStore:
             CREATE INDEX IF NOT EXISTS idx_deleted_messages_id
             ON deleted_messages (message_id)
         """)
-        logger.info("Sqlite database initialized successfully")
+        logger.info("Connected to SQLite database successfully")
 
 
     def add_message(self, channel_id, message):

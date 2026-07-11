@@ -37,13 +37,13 @@ class Extension:
 
         try:
             if app.config.get("ext_undelete_db_postgresql_host", None):
-                import database_postgres
+                import database_postgres_undelete
                 host = app.config.get("ext_undelete_db_postgresql_host")
                 user = app.config.get("ext_undelete_db_postgresql_user", "user")
                 password = app.config.get("ext_undelete_db_postgresql_password", "password")
-                self.messages_db = database_postgres.ChannelStore(host, user, password, "deleted-store")
+                self.messages_db = database_postgres_undelete.ChannelStore(host, user, password, "deleted-store")
             else:
-                import database_sqlite
+                import database_sqlite_undelete
                 database_path = app.config.get("ext_undelete_db_dir_path")
                 if not database_path:
                     database_path = f"{os.path.expanduser(peripherals.config_path)}/db/"
@@ -51,7 +51,7 @@ class Extension:
                 if not os.path.exists(database_path):
                     os.makedirs(database_path, exist_ok=True)
                 database_path = os.path.join(database_path, "deleted-store.db")
-                self.messages_db = database_sqlite.ChannelStore(database_path)
+                self.messages_db = database_sqlite_undelete.ChannelStore(database_path)
         except Exception as e:
             logger.error(f"Failed connecting to database: {e}")
             del type(self).on_message_event_is_irrelevant
@@ -160,7 +160,9 @@ class Extension:
         channel_id = self.app.active_channel["channel_id"]
         guild_id = self.app.active_channel["channel_id"]
         start_id = messages[-1]["id"] if messages else self.app.messages[-1]["id"]
-        if self.app.tui.get_chat_selected()[1] == 0 and self.app.get_chat_last_message_id() == self.app.last_message_id:
+        logger.info((self.app.tui.get_chat_selected()[1], self.app.get_chat_last_message_id(), self.app.last_message_id))
+        scrolled_bot = self.app.tui.get_chat_selected()[1] == 0 and self.app.get_chat_last_message_id() == self.app.last_message_id
+        if scrolled_bot:
             end_id = str((int(time.time()) * 1000 - formatter.DISCORD_EPOCH_MS) << 22)
         else:
             end_id = messages[0]["id"] if messages else self.app.messages[0]["id"]
@@ -195,7 +197,7 @@ class Extension:
                 if message_c_id < int(messages[-1]["id"]):
                     continue
                 if message_c_id > int(messages[0]["id"]):
-                    if int(messages[0]["id"]) >= int(self.app.last_message_id):
+                    if (int(messages[0]["id"]) >= int(self.app.last_message_id)) or scrolled_bot:
                         messages.insert(0, message_c)
                     continue
                 for num, message in enumerate(messages):
@@ -213,7 +215,7 @@ class Extension:
             if message_c_id < int(self.app.messages[-1]["id"]):
                 continue
             if message_c_id > int(self.app.messages[0]["id"]):
-                if int(self.app.messages[0]["id"]) >= int(self.app.last_message_id):
+                if (int(self.app.messages[0]["id"]) >= int(self.app.last_message_id)) or scrolled_bot:
                     self.app.messages.insert(0, message_c)
                 continue
             for num, message in enumerate(self.app.messages):
