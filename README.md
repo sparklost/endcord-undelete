@@ -7,7 +7,9 @@ See [official extensions documentation](https://github.com/sparklost/endcord/blo
 Available options:
 - Git clone into `Extensions` directory located in endcord config directory.
 - Run `endcord -i https://github.com/sparklost/endcord-undelete`
-- Or use endcord client-side command `install_extension sparklost/endcord-undelete`
+- Or use endcord client-side command `install_extension sparklost/endcord-undelete`  
+
+To use postgresql in termux, first install `postgresql`, `cmake` and `clang`. Then install this extension.
 
 ## Configuration
 All extension options are under `[main]` section in endcord config. This extension options are always prefixed with `ext_undelete_`.  

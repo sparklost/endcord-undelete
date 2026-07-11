@@ -22,8 +22,10 @@ def install_packages(libraries):
     """Install specified packages in extension dir"""
     subprocess.run(["python", "-m", "venv", "env"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     for lib in libraries:
+        if lib.startswith("psycopg") and sys.platform =="android" and shutil.which("termux-backup") and shutil.which("clang"):
+            lib = lib.replace("psycopg", "psycopg[c]")   # noqa
         subprocess.run(
-            ["./env/bin/python", "-m", "pip", "install", lib],
+            ["./env/bin/python", "-m", "pip", "install", "--target=temp", lib],
             check=True,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
@@ -33,6 +35,8 @@ def install_packages(libraries):
     if not os.path.exists(temp_dir):
         return
     for lib in libraries:
+        if lib.startswith("psycopg") and sys.platform =="android" and shutil.which("termux-backup") and shutil.which("clang"):
+            shutil.move(os.path.join(temp_dir, "psycopg_c"), os.path.join(current_dir, "psycopg_c"))
         lib_name = lib.split("<")[0].split(">")[0].split("=")[0]
         shutil.move(os.path.join(temp_dir, lib_name), os.path.join(current_dir, lib_name))
     shutil.rmtree(temp_dir)
@@ -43,7 +47,7 @@ def main():
     """Setup environment"""
     if sys.platform =="android" and shutil.which("termux-backup"):
         install_packages_termux(TERMUX_PACKAGES)
-        install_packages([x for x in PACKAGES if any(x.startswith(y) for y in TERMUX_PACKAGES)])
+        install_packages([x for x in PACKAGES if not any(x.startswith(y) for y in TERMUX_PACKAGES)])
         return
     install_packages(PACKAGES)
 
