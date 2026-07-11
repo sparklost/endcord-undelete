@@ -9,7 +9,8 @@ Available options:
 - Run `endcord -i https://github.com/sparklost/endcord-undelete`
 - Or use endcord client-side command `install_extension sparklost/endcord-undelete`  
 
-To use postgresql in termux, first install `postgresql`, `cmake` and `clang`. Then install this extension.
+To use postgresql in termux, first install `postgresql`, `cmake` and `clang`. Then install this extension.  
+If running on termux, and get error `No module named _sysconfigdata__linux_arm-linux-androideabi` then run `patch_sysconfigdata.sh` script.
 
 ## Configuration
 All extension options are under `[main]` section in endcord config. This extension options are always prefixed with `ext_undelete_`.  
