@@ -160,7 +160,6 @@ class Extension:
         channel_id = self.app.active_channel["channel_id"]
         guild_id = self.app.active_channel["channel_id"]
         start_id = messages[-1]["id"] if messages else self.app.messages[-1]["id"]
-        logger.info((self.app.tui.get_chat_selected()[1], self.app.get_chat_last_message_id(), self.app.last_message_id))
         scrolled_bot = self.app.tui.get_chat_selected()[1] == 0 and self.app.get_chat_last_message_id() == self.app.last_message_id
         if scrolled_bot:
             end_id = str((int(time.time()) * 1000 - formatter.DISCORD_EPOCH_MS) << 22)
