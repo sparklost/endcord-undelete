@@ -156,7 +156,7 @@ class Extension:
     def undelete(self, messages=None):
         """Fetch messages from db and add them to currently active chat"""
         if not self.app.messages:
-            return
+            return messages
         channel_id = self.app.active_channel["channel_id"]
         guild_id = self.app.active_channel["channel_id"]
         start_id = self.app.messages[-1]["id"]
