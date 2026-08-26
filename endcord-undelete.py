@@ -180,7 +180,7 @@ class Extension:
             message["mentions"] = []
             message["mention_roles"] = []
             message["timestamp"] = formatter.timestamp_from_snowflake(message["id"], format_string="%Y-%m-%dT%H:%M:%S.%f%z")
-            if "referenced_message" in message:
+            if "referenced_message" in message and message["referenced_message"]:
                 message["referenced_message"]["timestamp"] = formatter.timestamp_from_snowflake(
                     message["referenced_message"]["id"],
                     format_string="%Y-%m-%dT%H:%M:%S.%f%z",
