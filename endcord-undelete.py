@@ -6,7 +6,7 @@ import time
 from endcord import formatter, peripherals
 
 EXT_NAME = "Undelete"
-EXT_VERSION = "0.1.1"
+EXT_VERSION = "0.1.2"
 EXT_ENDCORD_VERSION = "1.5.0"
 EXT_DESCRIPTION = "An extension that persistently stores deleted messages for specific channels/servers and shows them in the chat"
 EXT_SOURCE = "https://github.com/sparklost/endcord-undelete"
@@ -122,7 +122,7 @@ class Extension:
             else:
                 return
             minimal_msg = {k: v for k, v in message.items() if k not in ("channel_id", "guild_id", "mentions", "mention_roles", "timestamp")}
-            if "referenced_message" in minimal_msg:
+            if "referenced_message" in minimal_msg and minimal_msg["referenced_message"]:
                 minimal_msg["referenced_message"] = minimal_msg["referenced_message"].copy()
                 if minimal_msg["referenced_message"]:
                     minimal_msg["referenced_message"].pop("embeds", None)
