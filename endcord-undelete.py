@@ -6,8 +6,8 @@ import time
 from endcord import formatter, peripherals
 
 EXT_NAME = "Undelete"
-EXT_VERSION = "0.1.2"
-EXT_ENDCORD_VERSION = "1.5.0"
+EXT_VERSION = "0.1.3"
+EXT_ENDCORD_VERSION = "1.6.0"
 EXT_DESCRIPTION = "An extension that persistently stores deleted messages for specific channels/servers and shows them in the chat"
 EXT_SOURCE = "https://github.com/sparklost/endcord-undelete"
 logger = logging.getLogger(__name__)
