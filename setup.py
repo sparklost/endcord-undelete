@@ -1,22 +1,9 @@
-import glob
 import os
 import shutil
 import subprocess
 import sys
 
-PACKAGES = ["apsw==3.53.3.1", "psycopg==3.3.4"]
-TERMUX_PACKAGES = ["apsw"]
-
-
-def install_packages_termux(packages):
-    """Install specified packages in extension dir, for termux"""
-    for package in packages:
-        if not shutil.which(package):
-            subprocess.run(["pkg", "i", f"python-{package}"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        current_dir = os.getcwd()
-        system_dir = glob.glob(os.path.expandvars("$PREFIX/lib/python*/site-packages"))[0]
-        shutil.copytree(os.path.join(system_dir, package), os.path.join(current_dir, package))
-
+PACKAGES = ["psycopg==3.3.4"]
 
 def install_packages(libraries):
     """Install specified packages in extension dir"""
@@ -45,10 +32,6 @@ def install_packages(libraries):
 
 def main():
     """Setup environment"""
-    if sys.platform =="android" and shutil.which("termux-backup"):
-        install_packages_termux(TERMUX_PACKAGES)
-        install_packages([x for x in PACKAGES if not any(x.startswith(y) for y in TERMUX_PACKAGES)])
-        return
     install_packages(PACKAGES)
 
 
